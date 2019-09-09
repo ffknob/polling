@@ -1,0 +1,31 @@
+{
+  "name": "polling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffknob/polling.git"
+  },
+  "author": "Flávio Franco Knob <ffknob@gmail.com> (http://www.ffknob.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ffknob/polling/issues"
+  },
+  "homepage": "https://github.com/ffknob/polling#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.13",
+    "morgan": "^1.9.1",
+    "winston": "^3.2.1"
+  }
+}
