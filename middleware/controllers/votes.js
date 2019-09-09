@@ -5,7 +5,7 @@ const Vote = require('../models/vote');
 exports.getAll = (req, res, next) => {
 	Vote
 	.find()
-	.populate('user')
+	.populate('voter')
 	.exec()
 	.then(votes => {
 		res.status(200).json(votes);
@@ -18,7 +18,7 @@ exports.get = (req, res, next) => {
 
 	Vote
 	.findById(_id)
-	.populate('user')
+	.populate('voter')
 	.exec()
 	.then(vote => {
 		res.status(200).json(vote);
@@ -28,7 +28,7 @@ exports.get = (req, res, next) => {
 
 function createVote(userId, pollId, multiplier) {
 	const vote = new Vote({
-        user: userId,
+        voter: userId,
         poll: pollId,
         multiplier: multiplier
 	});
