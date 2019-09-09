@@ -1,10 +1,12 @@
+const logger = require('../services/logger');
+
 const User = require('../models/user');
 
 exports.getAll = (req, res, next) => {
 	User
 	.find()
 	.populate('createBy')
-	.execPopulate()
+	.exec()
 	.then(users => {
 		res.status(200).json(users);
 	})
@@ -17,31 +19,67 @@ exports.get = (req, res, next) => {
 	User
 	.findById(_id)
 	.populate('createBy')
-	.execPopulate()
+	.exec()
 	.then(user => {
 		res.status(200).json(user);
 	})
 	.catch(err => next(err));
 };
 
-exports.create = (req, res, next) => {
-	const user = req.user;
-	const username = req.body.username;
-	const name = req.body.name;
-	const email = req.body.email;
-
-	const newUser = new User({
+function createUser(userId, username, name, email) {
+	const user = new User({
 		username: username,
 		name: name,
-		email: email
+		email: email,
+		createdBy: userId
 	});
 	
-	newUser
-	.save()
-	.then(createdUser => {
-		res.status(200).json(createdUser);
-	})
-	.catch(err => next(err));
+	return user.save();
+}
+
+exports.create = (req, res, next) => {
+	const user = req.user;
+	const users = req.body;
+
+	let successes = 0;
+	let failures = 0;
+	let createdUsers = [];
+	let failedUsers = [];
+	
+	if (Array.isArray(users)) {
+		Promise.all(
+			users
+			.map(user => 
+				createUser(user._id, user.username, user.name, user.email)
+				.then(user => {
+					successes++;
+					createdUsers.push(user);
+				})
+				.catch(err => {
+					failures++;
+					failedUsers.push({ ...user, error: err });
+					logger.error(err);
+				})
+			)
+		)
+		.then(() => res.status(200).json({
+			totals: { successes: successes, failures: failures},
+			createdUsers: createdUsers,
+			failedUsers: failedUsers
+		}))
+		.catch(err => next(err));
+
+	} else {
+		const username = req.body.username;
+		const name = req.body.name;
+		const email = req.body.email;
+
+		createUser(user._id, username, name, email)
+		.then(user => {
+			res.status(200).send(user);
+		})
+		.catch(err => next(err));;
+	}
 };
 
 exports.update = (req, res, next) => {

@@ -4,7 +4,6 @@
 
 ```
 PORT=3000
-APP_USER_ID=5d766ea31c9d440000f8f0bc
 APP_USER_USERNAME=polling
 APP_USER_NAME=Polling
 APP_USER_EMAIL=polling@ffknob.com.br

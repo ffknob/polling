@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const logger = require('./services/logger');
 
 const mongodbService = require('./services/mongodb');
+const User = require('./models/user');
 
 const initService = require('./services/init');
 
@@ -19,12 +20,17 @@ app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/*app.use((req, res, next) => {
-	const APP_USER_ID = process.env.APP_USER_ID || '';
+app.use((req, res, next) => {
+	const appUserUsername = process.env.APP_USER_USERNAME || 'polling';
 	User
-	.findById(APP_USER_ID)
-
-});*/
+	.findOne()
+	.byUsername(appUserUsername)
+	.then(user => {
+		req.user = user;
+		next();
+	})
+	.catch(err => next(err));
+});
 app.use('/users', usersRoutes);
 
 app.use((err, req, res, next) => {
