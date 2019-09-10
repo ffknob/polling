@@ -35,7 +35,32 @@ export class MiddlewareService {
     }
 
     fetch(endpoint) {
+        const url = this.getMiddlewareString() + endpoint;
         return this.http
-            .get('http://localhost:3000/polls');
+            .get(url);
+    }
+
+    get(endpoint) {
+        const url = this.getMiddlewareString() + endpoint;
+        return this.http
+            .get(url);
+    }
+
+    post(endpoint, data) {
+        const url = this.getMiddlewareString() + endpoint;
+        return this.http
+            .post(url, data);
+    }
+
+    put(endpoint, data) {
+        const url = this.getMiddlewareString() + endpoint;
+        return this.http
+            .put(url, data);
+    }
+
+    delete(endpoint) {
+        const url = this.getMiddlewareString() + endpoint;
+        return this.http
+            .delete(url);
     }
 }

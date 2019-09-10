@@ -32,8 +32,35 @@ export class PollsService {
       .fetch(endpoint)
       .subscribe(
         polls => this.set(polls),
-        err => { throw err; },
-        () => console.log('completed')
+        err => { throw err; }
       );
+  }
+
+  findById(id) {
+    const endpoint = `/polls/${id}`;
+
+    return this.middlewareService
+      .get(endpoint);
+  }
+
+  create(poll: Poll) {
+    const endpoint = '/polls';
+
+    return this.middlewareService
+      .post(endpoint, poll);
+  }
+
+  save(poll: Poll) {
+    const endpoint = `/polls/${poll._id}`;
+
+    return this.middlewareService
+      .put(endpoint, poll);
+  }
+
+  deleteById(id) {
+    const endpoint = `/polls/${id}`;
+
+    return this.middlewareService
+      .delete(endpoint);
   }
 }

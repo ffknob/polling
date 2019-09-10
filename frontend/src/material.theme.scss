@@ -1,0 +1,32 @@
+// FONTS
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@import '~@angular/material/theming';
+
+$general-typography: mat-typography-config(
+  $font-family: '"Roboto Condensed", "Helvetica Neue", sans-serif',
+  $body-2:        mat-typography-level(18px, 24px, 600)
+);
+
+$secondary-typography: mat-typography-config(
+  $font-family: 'sans-serif'
+);
+
+@include mat-core($general-typography);
+
+// MATERIAL THEME
+$primary: mat-palette($mat-blue-gray, 800);
+$secondary:  mat-palette($mat-teal, 400);
+$warn:    mat-palette($mat-red, 600, 200, 100);
+$theme:   mat-light-theme($primary, $secondary, $warn);
+@include angular-material-theme($theme);
+
+// COLORS
+$color-white: white;
+$color-gray-light: whitesmoke;
+$color-gray: #f6f6f6;
+$color-black: #000;
+$color-yellow: yellow;
+$color-red: red;

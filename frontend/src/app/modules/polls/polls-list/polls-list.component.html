@@ -1,0 +1,32 @@
+<div *ngFor="let poll of polls; let i = index">
+    <mat-card class="poll-card">
+        <mat-card-header>
+            <mat-card-title>{{ poll.title }}</mat-card-title>
+            <mat-card-subtitle>{{ poll.question }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            (gráfico)
+        </mat-card-content>
+        <mat-card-actions>
+            <button
+                mat-icon-button
+                type="button"
+                (click)="onVote()">
+                <mat-icon>how_to_vote</mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                type="button"
+                routerLink="/polls/edit/{{ poll._id }}">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                type="button"
+                (click)="onRemove()">
+                <mat-icon color="warn">clear</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

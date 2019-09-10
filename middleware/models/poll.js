@@ -18,7 +18,6 @@ const pollSchema = new Schema({
 		},
 		votes: {
 			type: mongoose.Types.ObjectId,
-			required: true,
 			ref: 'Vote'
 		}		
 	}],

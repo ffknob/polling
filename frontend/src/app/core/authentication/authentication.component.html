@@ -1,0 +1,22 @@
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <label for="username">Username</label>
+    <input
+        type="text"
+        id="username"
+        ngModel
+        name="username"
+        required>
+
+    <label for="password">Password</label>
+    <input
+        type="password"
+        id="password"
+        ngModel
+        name="password"
+        required
+        minlength="6">
+
+    <button type="submit" [disabled]="!f.valid">
+        Login
+    </button>
+</form>

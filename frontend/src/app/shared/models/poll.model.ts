@@ -6,6 +6,7 @@ export class Poll {
         public title: string,
         public question: string,
         public options: PollOption[],
-        public createdBy: User,
-        public createdAt: Date) {}
+        public _id?: any,
+        public createdBy?: User,
+        public createdAt?: Date) {}
 }

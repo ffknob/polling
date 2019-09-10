@@ -12,7 +12,10 @@
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
       "@pipes/*": ["app/shared/pipes/*"],
-      "@directives/*": ["app/shared/directives/*"]
+      "@directives/*": ["app/shared/directives/*"],
+      
+      "@modules/*": ["app/modules/*"],
+      "@polls/*": ["app/modules/polls/*"]
     }
   },
   "files": [

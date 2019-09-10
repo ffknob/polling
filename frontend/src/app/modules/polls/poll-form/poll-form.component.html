@@ -1,0 +1,99 @@
+<div *ngIf="errors">
+    <h2 class="mat-h2">
+        Errors:
+    </h2>
+
+    <ul>
+        <li *ngFor="let error of errors; let i = index">
+            {{ error }}
+        </li>
+    </ul>
+
+</div>
+
+<form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
+    <div flexLayout="column">
+        <div>
+            <mat-form-field>
+                <label for="title">Title</label>
+                <input
+                    matInput
+                    type="text"
+                    id="title"
+                    formControlName="title"
+                    name="title"
+                    value="{{ poll ? poll.title : null }}"
+                    required>
+                <mat-error *ngIf="pollForm.controls.title.hasError('required')">
+                    Please enter a title for the new poll
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field>
+                <label for="question">Question</label>
+                <textarea
+                    matInput
+                    id="question"
+                    formControlName="question"
+                    name="question"
+                    value="{{ poll ? poll.question : null }}"
+                    rows="5"
+                    required>
+                </textarea>
+                <mat-error *ngIf="pollForm.controls.question.hasError('required')">
+                    Please enter a question for the new poll
+                </mat-error>                    
+            </mat-form-field>
+        </div>
+
+        <div formArrayName="options">
+            <h2 class="mat-h2">Options</h2>
+
+            <mat-list role="list">
+                <mat-list-item
+                    *ngFor="let option of pollForm.get('options').controls; let i = index;"
+                    role="listitem">
+                    <input
+                        matInput
+                        type="text"
+                        [formControlName]="i"
+                        placeholder="Option">
+                    <button
+                        *ngIf="i != 0"
+                        mat-icon-button 
+                        type="button"
+                        (click)="onRemoveOption(i)">
+                        <mat-icon color="warn">clear</mat-icon>
+                    </button>
+                    <button 
+                        mat-icon-button
+                        type="button"
+                        (click)="onAddOption()">
+                        <mat-icon
+                            aria-label="Add option">
+                            add
+                        </mat-icon>
+                    </button>                    
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <div>    
+            <button
+                mat-raised-button
+                type="reset">
+                Clear
+            </button>
+
+            <button
+                mat-raised-button
+                type="submit"
+                color="primary"
+                [disabled]="!pollForm.valid">
+                {{ poll ? 'Save' : 'Create' }}
+            </button>
+        </div>
+    </div>
+</form>
