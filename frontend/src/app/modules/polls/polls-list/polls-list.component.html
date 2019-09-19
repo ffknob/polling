@@ -1,4 +1,5 @@
-<div *ngFor="let poll of polls; let i = index">
+<mat-grid-list [cols]="(isHandset$ | async) ? 1 : 2" rowHeight="2:1">
+  <mat-grid-tile *ngFor="let poll of polls; let i = index">
     <mat-card class="poll-card">
         <mat-card-header>
             <mat-card-title>{{ poll.title }}</mat-card-title>
@@ -29,4 +30,5 @@
             </button>
         </mat-card-actions>
     </mat-card>
-</div>
+  </mat-grid-tile>
+</mat-grid-list>

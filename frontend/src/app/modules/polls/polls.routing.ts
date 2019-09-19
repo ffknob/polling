@@ -7,13 +7,10 @@ import { PollCreateComponent } from '@modules/polls/poll-create/poll-create.comp
 import { PollEditComponent } from '@modules/polls/poll-edit/poll-edit.component';
 
 const routes: Routes = [
-    { path: '', component: PollsComponent,
-        children: [
-            { path: 'list', component: PollsListComponent },
-            { path: 'create', component: PollCreateComponent },
-            { path: 'edit/:id', component: PollEditComponent }
-        ]
-    }
+    { path: '', component: PollsComponent },
+    { path: 'list', component: PollsListComponent },
+    { path: 'create', component: PollCreateComponent },
+    { path: 'edit/:id', component: PollEditComponent }
 ];
 
 @NgModule({
