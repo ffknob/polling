@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
+
+import { Poll } from '@root/shared/models/poll.model';
 
 import { PollsService } from '@core/services/polls.service';
-import { Subscription } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import { Poll } from '@root/shared/models/poll.model';
 
 @Component({
   selector: 'app-polls-list',
@@ -19,14 +17,7 @@ export class PollsListComponent implements OnInit {
   private pollsSubscription: Subscription;
   private polls: Poll[] = [];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-  .pipe(
-    map(result => result.matches),
-    shareReplay()
-  );
-
   constructor(public router: Router,
-              private breakpointObserver: BreakpointObserver,
               private pollsService: PollsService) {
      const currentNavigation = this.router.getCurrentNavigation();
      this.createdPoll = currentNavigation && currentNavigation.extras.state ?
@@ -43,5 +34,4 @@ export class PollsListComponent implements OnInit {
 
     this.pollsService.fetch();
   }
-
 }

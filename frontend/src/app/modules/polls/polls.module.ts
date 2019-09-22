@@ -5,13 +5,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialModule } from '@root/material.module';
 
+import { PollsRoutingModule } from './polls.routing';
+
 import { PollsListComponent } from './polls-list/polls-list.component';
 import { PollsComponent } from './polls/polls.component';
 import { PollCreateComponent } from './poll-create/poll-create.component';
 import { PollEditComponent } from './poll-edit/poll-edit.component';
 import { PollFormComponent } from './poll-form/poll-form.component';
-
-import { PollsRoutingModule } from './polls.routing';
+import { PollCardComponent } from './poll-card/poll-card.component';
+import { PollDeleteConfirmationDialogComponent } from './poll-card/poll-delete-confirmation-dialog/poll-delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { PollsRoutingModule } from './polls.routing';
     PollsComponent,
     PollCreateComponent,
     PollEditComponent,
-    PollFormComponent
+    PollFormComponent,
+    PollCardComponent,
+    PollDeleteConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +31,9 @@ import { PollsRoutingModule } from './polls.routing';
     FlexLayoutModule,
     MaterialModule,
     PollsRoutingModule
+  ],
+  entryComponents: [
+    PollDeleteConfirmationDialogComponent
   ]
 })
 export class PollsModule { }
