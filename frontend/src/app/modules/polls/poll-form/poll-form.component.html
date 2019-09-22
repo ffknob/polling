@@ -80,20 +80,37 @@
             </mat-list>
         </div>
 
-        <div>    
+        <div
+            fxLayout="row"
+            fxLayoutAlign="space-between"
+            fxLayoutA>
             <button
                 mat-raised-button
-                type="reset">
-                Clear
+                routerLink="/polls"
+                routerLinkActive="active">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+                Back to polls
             </button>
 
-            <button
-                mat-raised-button
-                type="submit"
-                color="primary"
-                [disabled]="!pollForm.valid">
-                {{ poll ? 'Save' : 'Create' }}
-            </button>
+            <div
+                fxLayout="row"
+                fxLayoutGap="20px">
+                <button
+                    mat-raised-button
+                    type="reset">
+                    <mat-icon>clear</mat-icon>
+                    Clear
+                </button>
+
+                <button
+                    mat-raised-button
+                    type="submit"
+                    color="primary"
+                    [disabled]="!pollForm.valid">
+                    <mat-icon>check</mat-icon>
+                    {{ poll ? 'Save' : 'Create' }}
+                </button>
+            </div>
         </div>
     </div>
 </form>
