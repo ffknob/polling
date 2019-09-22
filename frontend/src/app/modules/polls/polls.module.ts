@@ -14,6 +14,7 @@ import { PollEditComponent } from './poll-edit/poll-edit.component';
 import { PollFormComponent } from './poll-form/poll-form.component';
 import { PollCardComponent } from './poll-card/poll-card.component';
 import { PollDeleteConfirmationDialogComponent } from './poll-card/poll-delete-confirmation-dialog/poll-delete-confirmation-dialog.component';
+import { PollVoteComponent } from './poll-vote/poll-vote.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PollDeleteConfirmationDialogComponent } from './poll-card/poll-delete-c
     PollEditComponent,
     PollFormComponent,
     PollCardComponent,
-    PollDeleteConfirmationDialogComponent
+    PollDeleteConfirmationDialogComponent,
+    PollVoteComponent
   ],
   imports: [
     CommonModule,
