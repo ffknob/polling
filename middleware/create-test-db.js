@@ -19,6 +19,7 @@ const POLLS = [
     {
         title: "Animal",
         question: "What is your favorite animal?",
+        multiChoice: false,
         options: [
             { option: "Dog" },
             { option: "Cat" },
@@ -28,6 +29,7 @@ const POLLS = [
     {
         title: "Color",
         question: "What is your favorite color?",
+        multiChoice: false,
         options: [
             { option: "Blue" },
             { option: "Red" },
@@ -40,6 +42,7 @@ const POLLS = [
     {
         title: "Travel",
         question: "Where would to travel to?",
+        multiChoice: true,
         options: [
             { option: "Brazil" },
             { option: "Germany" },
@@ -61,6 +64,8 @@ function main() {
     .connect()
     .then(async connection => {
         let appUser = null;
+        let users = [];
+        let polls = [];
 
         await cleanCollections(MODELS);
 
@@ -72,11 +77,21 @@ function main() {
         .catch(err => threatError(err));
 
         await createUsers(appUser, USERS_TOTAL)
-        .then((result) => logger.info(`Created ${result.successes} users`))
+        .then((result) => {
+            logger.info(`Created ${result.successes} users`);
+            users = result.users;
+        })
         .catch(err => threatError(err));
 
         await createPolls(appUser, POLLS)
-        .then((result) => logger.info(`Created ${result.successes} polls`))
+        .then((result) => {
+            logger.info(`Created ${result.successes} polls`);
+            polls = result.polls;
+        })
+        .catch(err => threatError(err));
+
+        await voting(appUser, users, polls)
+        .then((result) => logger.info(`Voting`))
         .catch(err => threatError(err));
 
         connection.disconnect();
@@ -147,15 +162,16 @@ function generateFakeUser() {
 
 function createUsers(appUser, total) {
     const promises = [];
-    const result = { successes: 0, failures: 0 };
+    const result = { successes: 0, failures: 0, users: [] };
 
     for (let i = 0; i < total; i++) {
         const fakeUser = generateFakeUser();
 
         promises.push(
             createUser(appUser, fakeUser)
-            .then(user => {
-                logger.info(`Created user ${user.username}`);
+            .then(createdUser => {
+                logger.info(`Created user ${createdUser.username}`);
+                result.users.push(createdUser);
                 result.successes++;
             })
             .catch(err => {
@@ -170,13 +186,14 @@ function createUsers(appUser, total) {
 }
 
 function createPolls(appUser, polls) {
-    const result = { successes: 0, failures: 0 };
+    const result = { successes: 0, failures: 0, polls: [] };
 
     return Promise.all(
         polls.map(async (poll) => {
             await createPoll(appUser, poll)
-            .then(() => {
+            .then((createdPoll) => {
                 logger.info(`Create poll ${poll.title}`);
+                result.polls.push(createdPoll);
                 result.successes++;
             })
             .catch(err => {
@@ -187,5 +204,68 @@ function createPolls(appUser, polls) {
     )
     .then(() => result);
 }
+
+function createVote(user, poll) {
+    const newVote = new Vote({
+        voter: user._id,
+        poll: poll._id,
+        multiplier: 1
+    });
+
+    return newVote.save();
+}
+
+function generateRandomTotalVotes(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function generateRandomVoter(users, except) {
+    const possibleVoters = users.filter(user => !except.includes(user));
+    const randomIndex = Math.floor(Math.random() * (possibleVoters.length));
+
+    return possibleVoters[randomIndex];
+}
+
+function generateRandomOption(options) {
+    const randomIndex = Math.floor(Math.random() * (options.length));
+
+    return options[randomIndex];
+}
+
+function voting(appUser, users, polls) {
+    return Promise.all(
+        polls.map(poll => {
+            Poll
+            .findById(poll._id)
+            .then(poll => {
+                const totalVotes = generateRandomTotalVotes(1, user.length);
+
+                for (let i = 0; i < totalVotes; i++) {
+                    const randomVoter = generateRandomVoter(users, poll);
+                    const randomOption = generateRandomOption(poll.options);
+
+                    createVote(randomVoter, poll)
+                    .then(vote => {
+                        poll.options
+                        .filter(option => option === randomOption)
+                        .forEach(option => {
+                            option.push(vote);
+                        });
+
+                        logger.info(`User ${vote.voter._id} voted for ${randomOption.option} in poll ${vote.poll._id}`);
+                    })
+                    .catch(err => threatError(err));
+                }
+
+                //poll.options.push({ user: "XXX" });
+
+                return poll
+            })
+            .then(async (poll) => { return await poll.save(); })
+        })
+    );
+}
+
+
 
 main();

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",
-    "createdb": "node createdb",
+    "create-test-db": "node create-test-db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
