@@ -7,9 +7,9 @@ const morgan = require('morgan');
 const logger = require('./services/logger');
 
 const mongodbService = require('./services/mongodb');
-const User = require('./models/user');
 
 const initService = require('./services/init');
+const User = require('./models/user');
 
 const app = express();
 
