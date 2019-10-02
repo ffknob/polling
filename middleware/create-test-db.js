@@ -49,6 +49,17 @@ const POLLS = [
             { option: "Italy" },
             { option: "France" }
         ]
+    },
+    {
+        title: "Workout",
+        question: "How many times a week do you exercise?",
+        multiChoice: true,
+        options: [
+            { option: "0" },
+            { option: "At least one" },
+            { option: "In average three" },
+            { option: "Everyday" }
+        ]
     }
 ];
 
