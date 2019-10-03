@@ -16,10 +16,10 @@ const pollSchema = new Schema({
 			type: String,
 			required: true
 		},
-		votes: {
+		votes: [{
 			type: mongoose.Types.ObjectId,
 			ref: 'Vote'
-		}		
+		}]
 	}],
 	createdBy: {
 		type: mongoose.Types.ObjectId,

@@ -21,9 +21,9 @@ const POLLS = [
         question: "What is your favorite animal?",
         multiChoice: false,
         options: [
-            { option: "Dog" },
-            { option: "Cat" },
-            { option: "Elephant" }
+            { option: "Dog", votes: [] },
+            { option: "Cat", votes: [] },
+            { option: "Elephant", votes: [] }
         ]
     },
     {
@@ -31,12 +31,12 @@ const POLLS = [
         question: "What is your favorite color?",
         multiChoice: false,
         options: [
-            { option: "Blue" },
-            { option: "Red" },
-            { option: "Green" },
-            { option: "Yellow" },
-            { option: "Black" },
-            { option: "White" }
+            { option: "Blue", votes: [] },
+            { option: "Red", votes: [] },
+            { option: "Green", votes: [] },
+            { option: "Yellow", votes: [] },
+            { option: "Black", votes: [] },
+            { option: "White", votes: [] }
         ]
     },
     {
@@ -44,10 +44,10 @@ const POLLS = [
         question: "Where would to travel to?",
         multiChoice: true,
         options: [
-            { option: "Brazil" },
-            { option: "Germany" },
-            { option: "Italy" },
-            { option: "France" }
+            { option: "Brazil", votes: [] },
+            { option: "Germany", votes: [] },
+            { option: "Italy", votes: [] },
+            { option: "France", votes: [] }
         ]
     },
     {
@@ -55,10 +55,10 @@ const POLLS = [
         question: "How many times a week do you exercise?",
         multiChoice: true,
         options: [
-            { option: "Zero" },
-            { option: "At least one" },
-            { option: "In average three" },
-            { option: "Everyday" }
+            { option: "Zero", votes: [] },
+            { option: "At least one", votes: [] },
+            { option: "In average three", votes: [] },
+            { option: "Everyday", votes: [] }
         ]
     }
 ];
@@ -88,20 +88,23 @@ function main() {
         .catch(err => threatError(err));
 
         await createUsers(appUser, USERS_TOTAL)
-        .then((result) => {
+        .then(result => {
             logger.info(`Created ${result.successes} users`);
             users = result.users;
         })
         .catch(err => threatError(err));
 
         await createPolls(appUser, POLLS)
-        .then((result) => {
+        .then(result => {
             logger.info(`Created ${result.successes} polls`);
             polls = result.polls;
         })
         .catch(err => threatError(err));
+
         await voting(appUser, users, polls)
-        .then((result) => logger.info(`Voting`))
+        .then(result => {
+            logger.info(`Voting`)
+        })
         .catch(err => threatError(err));
 
         connection.disconnect();
@@ -247,7 +250,7 @@ function voting(appUser, users, polls) {
         polls.map(poll => {
             return Poll
             .findById(poll._id)
-            .then(poll => {
+            .then(async poll => {
                 const totalVotes = generateRandomTotalVotes(1, users.length);
                 const voters = [];
 
@@ -259,10 +262,11 @@ function voting(appUser, users, polls) {
 
                     const randomOption = generateRandomOption(poll.options);
 
-                    createVote(randomVoter, poll)
+                    await createVote(randomVoter, poll)
                     .then(vote => {
                         poll.options
-                        .filter(option => option === randomOption)
+                        .filter(option => option === randomOption)[0]
+                        .votes
                         .push(vote);
 
                         logger.info(`User ${vote.voter._id} voted for '${randomOption.option}' in poll '${poll.title}'`);
@@ -272,7 +276,7 @@ function voting(appUser, users, polls) {
 
                 return poll;
             })
-            .then(async (poll) => { return await poll.save(); })
+            .then(poll => poll.save())
         })
     );
 }

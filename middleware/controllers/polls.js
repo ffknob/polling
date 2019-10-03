@@ -1,6 +1,7 @@
 const logger = require('../services/logger');
 
 const Poll = require('../models/poll');
+const Vote = require('../models/vote');
 
 exports.getAll = (req, res, next) => {
 	Poll
@@ -117,5 +118,16 @@ exports.delete = (req, res, next) => {
 			res.status(404).json({ message: `Poll ${_id} not found` });
 		}
 	})
+	.catch(err => next(err));
+};
+
+exports.getVoteCount = (req, res, next) => {
+	const _id = req.params._id;
+
+	Vote
+	.countDocuments({
+		poll: _id
+	})
+	.then(count => res.status(200).json({ count: count }))
 	.catch(err => next(err));
 };
