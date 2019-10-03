@@ -55,7 +55,7 @@ const POLLS = [
         question: "How many times a week do you exercise?",
         multiChoice: true,
         options: [
-            { option: "0" },
+            { option: "Zero" },
             { option: "At least one" },
             { option: "In average three" },
             { option: "Everyday" }
@@ -100,7 +100,6 @@ function main() {
             polls = result.polls;
         })
         .catch(err => threatError(err));
-
         await voting(appUser, users, polls)
         .then((result) => logger.info(`Voting`))
         .catch(err => threatError(err));
@@ -145,14 +144,14 @@ function createPoll(appUser, poll) {
     return newPoll.save();
 }
 
-function createAppUser() {
-    const user = {
-        username: APP_USER_USERNAME,
-        name: APP_USER_NAME,
-        email: APP_USER_EMAIL
-    };
+function createVote(user, poll) {
+    const newVote = new Vote({
+        voter: user._id,
+        poll: poll._id,
+        multiplier: 1
+    });
 
-    return createUser(null, user);
+    return newVote.save();
 }
 
 function generateFakeUser() {
@@ -169,6 +168,33 @@ function generateFakeUser() {
         name: name,
         email: email
     };
+}
+
+function generateRandomTotalVotes(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function generateRandomVoter(users, except) {
+    const possibleVoters = users.filter(user => !except.includes(user));
+    const randomIndex = Math.floor(Math.random() * (possibleVoters.length));
+
+    return possibleVoters[randomIndex];
+}
+
+function generateRandomOption(options) {
+    const randomIndex = Math.floor(Math.random() * (options.length));
+
+    return options[randomIndex];
+}
+
+function createAppUser() {
+    const user = {
+        username: APP_USER_USERNAME,
+        name: APP_USER_NAME,
+        email: APP_USER_EMAIL
+    };
+
+    return createUser(null, user);
 }
 
 function createUsers(appUser, total) {
@@ -216,61 +242,35 @@ function createPolls(appUser, polls) {
     .then(() => result);
 }
 
-function createVote(user, poll) {
-    const newVote = new Vote({
-        voter: user._id,
-        poll: poll._id,
-        multiplier: 1
-    });
-
-    return newVote.save();
-}
-
-function generateRandomTotalVotes(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-function generateRandomVoter(users, except) {
-    const possibleVoters = users.filter(user => !except.includes(user));
-    const randomIndex = Math.floor(Math.random() * (possibleVoters.length));
-
-    return possibleVoters[randomIndex];
-}
-
-function generateRandomOption(options) {
-    const randomIndex = Math.floor(Math.random() * (options.length));
-
-    return options[randomIndex];
-}
-
 function voting(appUser, users, polls) {
     return Promise.all(
         polls.map(poll => {
-            Poll
+            return Poll
             .findById(poll._id)
             .then(poll => {
-                const totalVotes = generateRandomTotalVotes(1, user.length);
+                const totalVotes = generateRandomTotalVotes(1, users.length);
+                const voters = [];
+
+                logger.info(`Expecting ${totalVotes} for poll '${poll.title}'`);
 
                 for (let i = 0; i < totalVotes; i++) {
-                    const randomVoter = generateRandomVoter(users, poll);
+                    const randomVoter = generateRandomVoter(users, voters);
+                    voters.push(randomVoter);
+
                     const randomOption = generateRandomOption(poll.options);
 
                     createVote(randomVoter, poll)
                     .then(vote => {
                         poll.options
                         .filter(option => option === randomOption)
-                        .forEach(option => {
-                            option.push(vote);
-                        });
+                        .push(vote);
 
-                        logger.info(`User ${vote.voter._id} voted for ${randomOption.option} in poll ${vote.poll._id}`);
+                        logger.info(`User ${vote.voter._id} voted for '${randomOption.option}' in poll '${poll.title}'`);
                     })
                     .catch(err => threatError(err));
                 }
 
-                //poll.options.push({ user: "XXX" });
-
-                return poll
+                return poll;
             })
             .then(async (poll) => { return await poll.save(); })
         })
