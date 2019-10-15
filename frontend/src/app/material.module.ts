@@ -10,14 +10,14 @@ import {  MatToolbarModule,
           MatIconModule,
           MatCardModule,
           MatDialogModule,
-          MatSnackBarModule
+          MatSnackBarModule,
+          MatRadioModule
           /*
           MatGridListModule,
           MatIconRegistry,
           MatExpansionModule,
           MatToolbarModule,
           MatSidenavModule,
-          MatRadioModule,
           MatTableModule,
           MatCheckboxModule,
           MatTabsModule,
@@ -46,13 +46,13 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatFormFieldModule,
     MatCardModule,
     MatDialogModule,
-    MatSnackBarModule/*
+    MatSnackBarModule,
+    MatRadioModule/*
     MatGridListModule,
     BrowserAnimationsModule,
     MatExpansionModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatRadioModule,
     MatTableModule,
     MatCheckboxModule,
     MatTabsModule,
@@ -80,13 +80,13 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatFormFieldModule,
     MatCardModule,
     MatDialogModule,
-    MatSnackBarModule/*
+    MatSnackBarModule,
+    MatRadioModule/*
     MatGridListModule,
     BrowserAnimationsModule,
     MatExpansionModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatRadioModule,
     MatTableModule,
     MatCheckboxModule,
     MatTabsModule,

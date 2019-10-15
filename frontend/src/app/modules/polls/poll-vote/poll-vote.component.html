@@ -1,12 +1,25 @@
-{{ state$ | async | json }}
-<!--
-<h1>{{ poll.title }}<h1>
+<div>
+    <h1 class="mat-display-1">
+        {{ poll.title }}
+    </h1>
 
-<p>
-    {{ poll.question }}
-</p>
+    <div class="mat-body-2">
+        <p>
+            {{ poll.question }}
+        </p>
 
-<ul>
-    <li *ngFor="let option of poll.options; let i = index">{{ option}}</li>
-</ul>
--->
+        <form [formGroup]="voteForm" (ngSubmit)="onSubmit()">
+            <div flexLayout="column">
+                <mat-radio-group aria-label="Options">
+                <div flexLayout="column">
+                    <mat-radio-button
+                        *ngFor="let option of poll.options"
+                        [value]="option._id">
+                        {{ option.option }}
+                    </mat-radio-button>
+                </div>
+                </mat-radio-group>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { Poll } from '@shared/models/poll.model';
 
@@ -10,9 +12,34 @@ import { PollsService } from '@root/core/services/polls.service';
   styleUrls: ['./poll-vote.component.scss']
 })
 export class PollVoteComponent implements OnInit {
+  poll: Poll;
 
-  constructor(private pollsService: PollsService) {}
+  voteForm: FormGroup;
 
-  ngOnInit() { 
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private pollsService: PollsService) { }
+
+  ngOnInit() {
+    const id = this.route.snapshot.params['id'];
+
+    if (id) {
+      this.pollsService
+        .findById(id)
+        .subscribe(
+          (poll: Poll) => {
+            this.poll = poll;
+            this.createVoteForm();
+          },
+          err => { throw err; }
+        );
+    } else {
+      //this.router.navigateByUrl('/polls/list', { state : { } });
+      console.log('error');
+    }
+  }
+
+  createVoteForm() {
+    this.voteForm = new FormGroup({});
   }
 }

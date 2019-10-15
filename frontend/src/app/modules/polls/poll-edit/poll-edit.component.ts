@@ -29,7 +29,7 @@ export class PollEditComponent implements OnInit {
         );
     } else {
       //this.router.navigateByUrl('/polls/list', { state : { } });
-      console.log('erro');
+      console.log('error');
     }
   }
 
