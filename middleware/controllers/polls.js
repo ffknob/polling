@@ -9,7 +9,19 @@ exports.getAll = (req, res, next) => {
 	.populate('createdBy')
 	.exec()
 	.then(polls => {
-		res.status(200).json(polls);
+		Promise.all(
+			polls.map(poll => {
+				return new Promise((resolve, reject) => {
+					Vote
+					.countDocuments({
+						poll: poll._id
+					})
+					.then(count => resolve({ ...poll._doc, voteCount: count }))
+					.catch(err => reject(err));
+				});
+			})
+		)
+		.then(polls => res.status(200).json(polls));
 	})
 	.catch(err => next(err));
 };
@@ -21,8 +33,15 @@ exports.get = (req, res, next) => {
 	.findById(_id)
 	.populate('createdBy')
 	.exec()
-	.then(poll => {
-		res.status(200).json(poll);
+	.then(async poll => {
+		await Vote
+		.countDocuments({
+			poll: poll._id
+		})
+		.then(count => ({ ...poll._doc, voteCount: count }))
+		.then(poll => res.status(200).json(poll))
+		.catch(err => next(err));
+
 	})
 	.catch(err => next(err));
 };
