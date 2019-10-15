@@ -73,3 +73,23 @@ To start the frontend component, simply serve it with the Angular CLI:
 ```
 ng serve
 ```
+
+# MongoDB
+
+```
+mongo "mongodb+srv://cluster0-5qsjr.mongodb.net/admin" --username polling
+
+use polling
+db.polls.find({}, { title: 1 })
+db.polls.findOne()
+db.users.find().forEach((document) => { print(document.email) })
+db.votes.aggregate([{$lookup: {from: "users", localField: "voter", foreignField: "_id", as: "voter"}}, {$lookup: {from: "polls", localField: "poll", foreignField: "_id", as: "poll"}}, {$project: {"poll.options.votes": 0}}]).pretty()
+db.polls.aggregate([
+  { $match: { _id: ObjectId("5da5b3a2f0ca1b54861c48c9") }},
+  { $unwind: "$options" },
+  { $project: { _id: 0, "options.option": 1, "options.voteCount": { $size: "$options.votes" } }},
+  { $addFields: { option: "$options.option", voteCount: "$options.voteCount" } },
+  { $project: { option: 1, voteCount: 1} },
+  { $sort: { voteCount: -1 }}
+]).pretty()
+```

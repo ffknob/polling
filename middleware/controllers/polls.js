@@ -1,5 +1,7 @@
 const logger = require('../services/logger');
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 const Poll = require('../models/poll');
 const Vote = require('../models/vote');
 
@@ -148,5 +150,21 @@ exports.getVoteCount = (req, res, next) => {
 		poll: _id
 	})
 	.then(count => res.status(200).json({ count: count }))
+	.catch(err => next(err));
+};
+
+exports.getResults = (req, res, next) => {
+	const _id = req.params._id;
+
+	Poll
+	.aggregate()
+	.match({ _id: ObjectId(_id) })
+	.unwind("$options")
+	.project({ _id: 0, "options.option": 1, "options.voteCount": { $size: "$options.votes" } })
+	.addFields({ option: "$options.option", voteCount: "$options.voteCount" })
+	.project({ option: 1, voteCount: 1 })
+	.sort({ voteCount: -1 })
+	.exec()
+	.then(results => res.status(200).json(results))
 	.catch(err => next(err));
 };

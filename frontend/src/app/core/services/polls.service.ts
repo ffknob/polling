@@ -63,4 +63,11 @@ export class PollsService {
     return this.middlewareService
       .delete(endpoint);
   }
+
+  getResults(id) {
+    const endpoint = `/polls/${id}/results`;
+
+    return this.middlewareService
+      .get(endpoint);
+  }
 }

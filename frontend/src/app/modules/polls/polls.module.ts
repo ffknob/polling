@@ -5,6 +5,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialModule } from '@root/material.module';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { PollsRoutingModule } from './polls.routing';
 
 import { PollsListComponent } from './polls-list/polls-list.component';
@@ -32,6 +34,7 @@ import { PollVoteComponent } from './poll-vote/poll-vote.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     MaterialModule,
+    NgxChartsModule,
     PollsRoutingModule
   ],
   entryComponents: [
