@@ -11,7 +11,9 @@ import {  MatToolbarModule,
           MatCardModule,
           MatDialogModule,
           MatSnackBarModule,
-          MatRadioModule
+          MatRadioModule,
+          MatProgressBarModule,
+          MatProgressSpinnerModule
           /*
           MatGridListModule,
           MatIconRegistry,
@@ -25,8 +27,6 @@ import {  MatToolbarModule,
           MatTooltipModule,
           MatChipsModule,
           MatDividerModule,
-          MatProgressBarModule,
-          MatProgressSpinnerModule,
           MatDatepickerModule,
           MatSelectModule,
 MatAutocompleteModule*/ } from '@angular/material';
@@ -47,7 +47,9 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatCardModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatRadioModule/*
+    MatRadioModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule/*
     MatGridListModule,
     BrowserAnimationsModule,
     MatExpansionModule,
@@ -61,8 +63,6 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatTooltipModule,
     MatChipsModule,
     MatDividerModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
     MatDatepickerModule,
     MatMomentDateModule,
     MatSelectModule,
@@ -81,7 +81,9 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatCardModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatRadioModule/*
+    MatRadioModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule/*
     MatGridListModule,
     BrowserAnimationsModule,
     MatExpansionModule,
@@ -94,8 +96,6 @@ MatAutocompleteModule*/ } from '@angular/material';
     MatTooltipModule,
     MatChipsModule,
     MatDividerModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
     MatDatepickerModule,
     MatMomentDateModule,
     MatSelectModule,
