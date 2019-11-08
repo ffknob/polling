@@ -17,5 +17,9 @@ mongoose.connection.on('diconnected', () => logger.info('Disconnected'));
 mongoose.connection.on('error', () => logger.error('Error'));
 
 exports.connect = () => {
-	return mongoose.connect(CONNECTION_STRING);
+	return mongoose.connect(CONNECTION_STRING, {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useFindAndModify: false
+	});
 };
