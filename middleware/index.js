@@ -41,9 +41,9 @@ const usersRoutes = require('./routes/users');
 const pollsRoutes = require('./routes/polls');
 const votesRoutes = require('./routes/votes');
 
-app.use('/users', usersRoutes);
-app.use('/polls', pollsRoutes);
-app.use('/votes', votesRoutes);
+app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/polls', pollsRoutes);
+app.use('/api/v1/votes', votesRoutes);
 
 app.use((err, req, res, next) => {
 	logger.error(err);
