@@ -9,4 +9,19 @@ export class Poll {
         public _id?: any,
         public createdBy?: User,
         public createdAt?: Date) {}
+
+  static adapt(data): Poll {
+   return new Poll(
+    data.title,
+    data.question,
+    data.options,
+    data._id,
+    data.createdBy,
+    data.createdAt
+   );
+  }
+
+  getVotingURL() {
+    return `${window.location.protocol}//${window.location.hostname}:${window.location.port}/polls/vote/${this._id}`;
+  }
 }

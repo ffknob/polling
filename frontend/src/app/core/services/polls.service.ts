@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Poll } from '@shared/models/poll.model';
 
 import { MiddlewareService } from '@core/services/middleware.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,10 @@ export class PollsService {
     const endpoint = `/polls/${id}`;
 
     return this.middlewareService
-      .get(endpoint);
+      .get(endpoint)
+      .pipe(
+        map(data => Poll.adapt(data))
+      );
   }
 
   create(poll: Poll) {

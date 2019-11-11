@@ -1,68 +1,78 @@
 <div *ngIf="poll$ | async">
-    <h1 class="mat-display-1">
-        {{ poll.title }}
-    </h1>
-
     <div class="mat-body-2">
-        <p>
-            {{ poll.question }}
-        </p>
-
-        <div *ngIf="!hasVoted; else results">
-            <form [formGroup]="voteForm" (ngSubmit)="onSubmit()">
-                <div >
-                    <mat-radio-group
-                        aria-label="Options"
-                        name="options"
-                        required>
-                        <mat-radio-button
-                            *ngFor="let option of poll.options"
-                            [value]="option._id">
-                            {{ option.option }}
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </div>
-
-                <div
-                    fxLayout="row"
-                    fxLayoutGap="15px">
-                    <button
-                        mat-raised-button
-                        routerLink="/polls"
-                        routerLinkActive="active">
-                        <mat-icon>keyboard_arrow_left</mat-icon>
-                        Back to polls
-                    </button>
-
-                    <button
-                        mat-raised-button
-                        type="submit"
-                        color="primary"
-                        [disabled]="!voteForm.valid">
-                        <mat-icon>check</mat-icon>
-                        Vote
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <ng-template #results>
-            <div *ngIf="results$ | async">
-                <ngx-charts-bar-horizontal
-                    [results]="chartResults"
-                    [view]="[800, 300]"
-                    [gradient]="false"
-                    [xAxis]="true"
-                    [yAxis]="true"
-                    [legend]="true"
-                    [showXAxisLabel]="true"
-                    [showYAxisLabel]="false"
-                    [xAxisLabel]="'Vote count'"
-                    [yAxisLabel]="'Options'"
-                    [xScaleMax]="chartResults[0].value*1.4"
-                >
-                </ngx-charts-bar-horizontal>
+        <div
+            fxLayout="row"
+            fxLayoutAlign="start"
+            fxLayoutGap="15px">
+            <div>
+                <app-qr-code data="{{ poll.getVotingURL() }}" size="512" level="M"></app-qr-code>
             </div>
-        </ng-template>
-    </div>
+
+            <div>
+                <h1 class="mat-display-1">
+                    {{ poll.title }}
+                </h1>
+
+                <p>
+                    {{ poll.question }}
+                </p>
+
+                <div *ngIf="!hasVoted; else results">
+                    <form [formGroup]="voteForm" (ngSubmit)="onSubmit()">
+                        <div >
+                            <mat-radio-group
+                                aria-label="Options"
+                                name="options"
+                                required>
+                                <mat-radio-button
+                                    *ngFor="let option of poll.options"
+                                    [value]="option._id">
+                                    {{ option.option }}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div
+                            fxLayout="row"
+                            fxLayoutGap="15px">
+                            <button
+                                mat-raised-button
+                                routerLink="/polls"
+                                routerLinkActive="active">
+                                <mat-icon>keyboard_arrow_left</mat-icon>
+                                Back to polls
+                            </button>
+
+                            <button
+                                mat-raised-button
+                                type="submit"
+                                color="primary"
+                                [disabled]="!voteForm.valid">
+                                <mat-icon>check</mat-icon>
+                                Vote
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <ng-template #results>
+                    <div *ngIf="results$ | async">
+                        <ngx-charts-bar-horizontal
+                            [results]="chartResults"
+                            [view]="[800, 300]"
+                            [gradient]="false"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [legend]="true"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="false"
+                            [xAxisLabel]="'Vote count'"
+                            [yAxisLabel]="'Options'"
+                            [xScaleMax]="chartResults[0].value*1.4"
+                        >
+                        </ngx-charts-bar-horizontal>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
 </div>

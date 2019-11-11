@@ -7,6 +7,8 @@ import { MaterialModule } from '@root/material.module';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+import { SharedModule } from '@shared/shared.module';
+
 import { PollsRoutingModule } from './polls.routing';
 
 import { PollsListComponent } from './polls-list/polls-list.component';
@@ -35,6 +37,7 @@ import { PollVoteComponent } from './poll-vote/poll-vote.component';
     FlexLayoutModule,
     MaterialModule,
     NgxChartsModule,
+    SharedModule,
     PollsRoutingModule
   ],
   entryComponents: [
